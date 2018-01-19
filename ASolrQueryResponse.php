@@ -60,7 +60,7 @@ class ASolrQueryResponse extends CComponent {
 	 * @param ASolrCriteria $criteria the search criteria
 	 * @param string $modelClass the name of the results model class
 	 */
-	public function __construct($solrObject, ASolrCriteria $criteria, $modelClass = "ASolrDocument") {
+	public function __construct($solrObject, $criteria, $modelClass = "ASolrDocument") {
 		$this->_solrObject = $solrObject;
 		$this->_criteria = $criteria;
 		$this->_modelClass = $modelClass;

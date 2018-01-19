@@ -72,7 +72,7 @@ class ASolrDataProvider extends CActiveDataProvider {
 	 */
 	public function setCriteria($value)
 	{
-		$this->_criteria=$value instanceof ASolrCriteria ? $value : new ASolrCriteria($value);
+		$this->_criteria=($value instanceof ASolrCriteria || $value instanceof ASolrDisMaxCriteria) ? $value : new ASolrCriteria($value);
 	}
 
 	/**
@@ -114,9 +114,12 @@ class ASolrDataProvider extends CActiveDataProvider {
 	 */
 	protected function fetchData()
 	{
-		$criteria=new ASolrCriteria();
-		$criteria->mergeWith($this->getCriteria());
 
+		//$criteria= new ASolrCriteria();
+		$criteria = ASolrUtils::criteriaFactory($this->getCriteria());
+
+		$criteria->mergeWith($this->getCriteria());
+//		var_dump(11111,$this->getCriteria());
 		if(($pagination=$this->getPagination())!==false)
 		{
 			$pagination->setItemCount(999999999); // set to an unreasonably high value to save an extra request
@@ -171,6 +174,7 @@ class ASolrDataProvider extends CActiveDataProvider {
 	 */
 	protected function calculateTotalItemCount()
 	{
+		//var_dump('22222count',$this->getCriteria());
 		if ($this->model instanceof CActiveRecord) {
 			// this should be a model with ASolrSearchable attached
 			return $this->model->getSolrDocument()->count($this->getCriteria());
@@ -233,5 +237,31 @@ class ASolrDataProvider extends CActiveDataProvider {
 	public function getSolrQueryResponse()
 	{
 		return $this->_solrQueryResponse;
+	}
+
+	/**
+	 * @param bool $idFQuery
+	 * @param string $fKey
+	 * @return array|null
+	 */
+	public function getFacet($fKey='rental_price', $isFQuery=false, $returnJson=true){
+		$ret = array();
+		if ($this->_solrQueryResponse === null) {
+			$this->getData();
+		}
+		$response = $this->_solrQueryResponse;
+		if (!$isFQuery) {
+			$ff = $response->getFieldFacets();
+			$ret = $ff->contains($fKey)?$ff->itemAt($fKey)->toArray():array();
+		}else {
+
+			$fq = $response->getQueryFacets()->toArray();
+			$facetKey = $fKey;//'rental_price';
+			//$priceRanges = self::createPriceRanges($facetKey, self::$_defConfig[$facetKey]);
+			foreach ($fq as $key => $val) {
+				$ret[] = array('query' => $val->name, 'value' => $val['value']);
+			}
+		}
+		return $returnJson?CJSON::encode($ret):$ret;
 	}
 }

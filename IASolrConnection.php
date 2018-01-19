@@ -40,14 +40,14 @@ interface IASolrConnection
 	 * @param string $modelClass the name of the model to use when instantiating results
 	 * @return ASolrQueryResponse the response from solr
 	 */
-	public function search(ASolrCriteria $criteria, $modelClass = "ASolrDocument");
+	public function search($criteria, $modelClass = "ASolrDocument");
 
 	/**
 	 * Counts the number of rows that match the given criteria
 	 * @param ASolrCriteria $criteria the search criteria
 	 * @return integer the number of matching rows
 	 */
-	public function count(ASolrCriteria $criteria);
+	public function count($criteria);
 
 	/**
 	 * Gets the last received solr query response

@@ -124,7 +124,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	public function attributeNames()
 	{
 		return CMap::mergeArray(
-				array_keys($this->_attributes->toArray()),
+				array_keys(empty($this->_attributes)?array():$this->_attributes->toArray()),
 				parent::attributeNames()
 			);
 	}
@@ -241,7 +241,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * Sets the solr query criteria for the current model.
 	 * @param ASolrCriteria $criteria the query criteria
 	 */
-	public function setSolrCriteria(ASolrCriteria $criteria)
+	public function setSolrCriteria($criteria)
 	{
 		$this->_solrCriteria=$criteria;
 	}
@@ -677,7 +677,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return integer the number of rows found
 	 */
-	public function count(ASolrCriteria $criteria = null)
+	public function count($criteria = null)
 	{
 		Yii::trace(get_class($this).'.count()','packages.solr.ASolrDocument');
 		if ($criteria === null) {
@@ -692,7 +692,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument the document found. Null if none is found.
 	 */
-	public function find(ASolrCriteria $criteria = null)
+	public function find($criteria = null)
 	{
 		Yii::trace(get_class($this).'.find()','packages.solr.ASolrDocument');
 		if ($criteria === null) {
@@ -706,7 +706,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument[] the documents found.
 	 */
-	public function findAll(ASolrCriteria $criteria = null)
+	public function findAll($criteria = null)
 	{
 		Yii::trace(get_class($this).'.findAll()','packages.solr.ASolrDocument');
 		if ($criteria === null) {
@@ -721,7 +721,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument the document found. Null if none is found.
 	 */
-	public function findByPk($pk,ASolrCriteria $criteria = null)
+	public function findByPk($pk,$criteria = null)
 	{
 		Yii::trace(get_class($this).'.findByPk()','packages.solr.ASolrDocument');
 		if ($criteria === null) {
@@ -746,7 +746,7 @@ class ASolrDocument extends CFormModel implements IASolrDocument{
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument the document found. Null if none is found.
 	 */
-	public function findAllByPk($pk,ASolrCriteria $criteria = null)
+	public function findAllByPk($pk,$criteria = null)
 	{
 		Yii::trace(get_class($this).'.findByPk()','packages.solr.ASolrDocument');
 		if ($criteria === null) {

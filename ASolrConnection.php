@@ -40,6 +40,7 @@ class ASolrConnection extends CApplicationComponent implements IASolrConnection
 	 * @return SolrClient the solr client
 	 */
 	public function getClient() {
+//		var_dump($this->getClientOptions()->toArray());die;
 		if ($this->_client === null) {
 			$this->_client = new SolrClient($this->getClientOptions()->toArray());
 		}
@@ -159,12 +160,16 @@ class ASolrConnection extends CApplicationComponent implements IASolrConnection
 	 * @param string $modelClass the name of the model to use when instantiating results
 	 * @return ASolrQueryResponse the response from solr
 	 */
-	public function search(ASolrCriteria $criteria, $modelClass = "ASolrDocument") {
+	public function search($criteria, $modelClass = "ASolrDocument") {
+		var_dump(1111111111, (string)$criteria);
+//		throw new Exception('aa');
 		if (is_object($modelClass)) {
 			$modelClass = get_class($modelClass);
 		}
-		$c = new ASolrCriteria();
+
+		$c = ASolrUtils::criteriaFactory($criteria);
 		$c->mergeWith($criteria);
+		//$c = $criteria;
 
 		Yii::trace('Querying Solr: '.((string) $c),'packages.solr.ASolrConnection');
 		$this->_lastQueryResponse = new ASolrQueryResponse($this->rawSearch($c),$c,$modelClass);
@@ -176,8 +181,10 @@ class ASolrConnection extends CApplicationComponent implements IASolrConnection
 	 * @param ASolrCriteria $criteria the search criteria
 	 * @return integer the number of matching rows
 	 */
-	public function count(ASolrCriteria $criteria) {
-		$c = new ASolrCriteria();
+	public function count($criteria) {
+//		var_dump($criteria);die;
+		//$c = new ASolrDisMaxCriteria();
+		$c = ASolrUtils::criteriaFactory($criteria);
 		$c->mergeWith($criteria);
 		$c->setLimit(0);
 		Yii::trace('Counting Results from Solr: '.((string) $c),'packages.solr.ASolrConnection');
@@ -190,12 +197,13 @@ class ASolrConnection extends CApplicationComponent implements IASolrConnection
 	 * @param ASolrCriteria $criteria the search criteria
 	 * @return SolrObject the response from solr
 	 */
-	protected function rawSearch(ASolrCriteria $criteria) {
+	protected function rawSearch($criteria) {
 		if ($this->enableProfiling) {
 			$profileTag = "packages.solr.AConnection.rawSearch(".$criteria->__toString().")";
 			Yii::beginProfile($profileTag);
 		}
 		$this->resetClient(); // solr client is not safely reusable, reset before every request
+//		var_dump($this->getClient());die;
 		$response = $this->getClient()->query($criteria)->getResponse();
 		if ($this->enableProfiling)
 			Yii::endProfile($profileTag);

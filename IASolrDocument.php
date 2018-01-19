@@ -81,21 +81,21 @@ interface IASolrDocument
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument the document found. Null if none is found.
 	 */
-	public function find(ASolrCriteria $criteria = null);
+	public function find($criteria = null);
 
 	/**
 	 * Finds multiple solr documents according to the specified criteria.
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return ASolrDocument[] the documents found.
 	 */
-	public function findAll(ASolrCriteria $criteria = null);
+	public function findAll($criteria = null);
 
     /**
 	 * Returns the number of documents matching specified criteria.
 	 * @param ASolrCriteria $criteria solr query criteria.
 	 * @return integer the number of rows found
 	 */
-	public function count(ASolrCriteria $criteria = null);
+	public function count($criteria = null);
     /**
 	 * Creates a solr document with the given attributes.
 	 * This method is internally used by the find methods.

@@ -143,18 +143,18 @@ class ASolrCriteria extends SolrQuery {
 		return $this->setStart($value);
 	}
 
-    /**
-     * Gets the sort order
-     * @return string the sort order
-     */
+	/**
+	 * Gets the sort order
+	 * @return string the sort order
+	 */
 	public function getOrder() {
 		return $this->getParam("sort");
 	}
 
-    /**
-     * Sets the sort order
-     * @param string $value the new sort order
-     */
+	/**
+	 * Sets the sort order
+	 * @param string $value the new sort order
+	 */
 	public function setOrder($value) {
 		$this->setParam("sort",$value);
 	}
@@ -287,7 +287,7 @@ class ASolrCriteria extends SolrQuery {
 				$value = "(".$query.") AND (".$criteria->getQuery().")";
 			}
 			if (!is_array($value)) {
-				   $this->setParam($name,$value);
+				$this->setParam($name,$value);
 			}
 			else {
 				foreach($value as $key => $val) {
@@ -304,6 +304,6 @@ class ASolrCriteria extends SolrQuery {
 	 * @return string the escaped string
 	 */
 	public function escape($string) {
-        return SolrUtils::escapeQueryChars($string);
+		return SolrUtils::escapeQueryChars($string);
 	}
 }
